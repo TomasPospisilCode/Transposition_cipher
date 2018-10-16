@@ -22,11 +22,27 @@ def DisplayUserInput(tupleWithData):
     print("User key: {0}".format(tupleWithData[1]))
 
 def DoTheTransposition(message, key):
-    pass
+    table = []
+    for x in range(key):#let's make it as two dimensional list, number of column is given by key so it might make 8 column now
+        table.append([x])
+    currentColumn = 0
+    currentRow = 0
 
+    #loops through every character in message
+    for character in message:
+        table[currentColumn].insert(currentRow,character) #Every character is assigned to new column on the first position in the column
+        currentColumn= currentColumn+1
+        if currentColumn > 7:#if program fiinish assigning character to last column, it starts with new row
+            currentColumn = 0
+            currentRow=currentRow+1
+    print(table)
 def Program():
     tupleWithData = UserInput()
     DisplayUserInput(tupleWithData)
+    DoTheTransposition("Common sense is not so common.", 8)
 
 
 Program()
+
+
+
