@@ -17,29 +17,44 @@ def UserInput():
     key = input("Enter your key: ")
     return (message, key)#Cool, multiple data can be returned by tuple
 
+#Displays user input
 def DisplayUserInput(tupleWithData):
     print("User message: {0}".format(tupleWithData[0]))
     print("User key: {0}".format(tupleWithData[1]))
 
+#Displays ciphered text
+def DisplayCipheredText(table):
+    cipheredMessage = ""
+    #Go through every column in table and add characters to ciphered message
+    for column in table:
+        for character in column:
+            cipheredMessage += character
+    print("Ciphered text: " + cipheredMessage)
+
 def DoTheTransposition(message, key):
     table = []
-    for x in range(key):#let's make it as two dimensional list, number of column is given by key so it might make 8 column now
-        table.append([x])
+    for x in range(int(key)):#let's make it as two dimensional list, number of column is given by key so it might make 8 column now
+        table.append([])
     currentColumn = 0
     currentRow = 0
 
     #loops through every character in message
     for character in message:
-        table[currentColumn].insert(currentRow,character) #Every character is assigned to new column on the first position in the column
+        table[currentColumn].insert(currentRow,character) #Every character is assigned to it's column
         currentColumn= currentColumn+1
-        if currentColumn > 7:#if program fiinish assigning character to last column, it starts with new row
+        if currentColumn > int(key)-1:#if program finish assigning character to last column, it starts with new row
             currentColumn = 0
             currentRow=currentRow+1
-    print(table)
+    return table
+
 def Program():
-    tupleWithData = UserInput()
+    tupleWithData = UserInput()#Tuple contains message and key
+    message = tupleWithData[0]
+    key = tupleWithData[1]
+
     DisplayUserInput(tupleWithData)
-    DoTheTransposition("Common sense is not so common.", 8)
+    table = DoTheTransposition(message, key)
+    DisplayCipheredText(table)
 
 
 Program()
