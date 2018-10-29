@@ -1,4 +1,5 @@
 #!/usr/bin/env
+import math
 
 '''
  _____                                   _ _   _                    _       _
@@ -10,6 +11,21 @@
                         | |                                          | |
                         |_|                                          |_|
 '''
+
+#Enter cipher and key and you got deciphered message
+def Decipher(cipheredText, key):
+    rowsOfTable = math.ceil(len(cipheredText) / key)#Get number of rows of table
+    decipheredText = ""
+
+    for row in range(rowsOfTable):#Go through every row
+        index = row
+        for char in cipheredText:
+            decipheredText += cipheredText[index]
+            index+rowsOfTable
+
+
+
+
 
 #No validation implemented yet
 def UserInput():
