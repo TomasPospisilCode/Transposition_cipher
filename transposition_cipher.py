@@ -19,9 +19,11 @@ def Decipher(cipheredText, key):
 
     for row in range(rowsOfTable):#Go through every row
         index = row
-        for char in cipheredText:
-            decipheredText += cipheredText[index]
-            index+rowsOfTable
+        for column in range(key):
+            if index <= len(cipheredText):
+                decipheredText += cipheredText[index]
+                index = index+rowsOfTable
+    print(decipheredText)
 
 
 
@@ -73,7 +75,8 @@ def Program():
     DisplayCipheredText(table)
 
 
-Program()
+#Program()
+Decipher("Cenoonommstmme oo snnio. s xs cx",8)
 
 
 
