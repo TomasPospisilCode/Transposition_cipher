@@ -1,5 +1,7 @@
 #!/usr/bin/env
 import math
+import random
+import sys
 
 '''
  _____                                   _ _   _                    _       _
@@ -11,22 +13,49 @@ import math
                         | |                                          | |
                         |_|                                          |_|
 '''
+def TestingFuction():
+    random.seed()#Setting seed
+    for i in range(20):#run 20 tests
+        message = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" * random.randint(4,40)#create message with random length
+        message = list(message)#convert message to list
+        random.shuffle(message)#shuffle characters in message
+        message = ''.join(message)
+        print("Test " + str(i+1) + "# " + message)
+
+        for key in range(1, len(message)):
+            encrypted_message = DoTheTransposition(message, key)
+            decrypted_message = Decipher(encrypted_message, key)
+
+
+            if message != decrypted_message:
+                print("Something gone wrong")
+                sys.exit()
+    print("Transposition passed")
+
+
 
 #Enter cipher and key and you got deciphered message
 def Decipher(cipheredText, key):
-    rowsOfTable = math.ceil(len(cipheredText) / key)#Get number of rows of table
-    decipheredText = ""
+    numOfColumns = math.ceil(len(cipheredText)/key)
+    numOfRows = key
 
-    for row in range(rowsOfTable):#Go through every row
-        index = row
-        for column in range(key):
-            if index <= len(cipheredText):
-                decipheredText += cipheredText[index]
-                index = index+rowsOfTable
-    print(decipheredText)
+    numOfShadeBoxes = (numOfColumns * numOfRows) - len(cipheredText)
 
+    plaintext = [''] * numOfColumns
 
+    col = 0
+    row = 0
 
+    for symbol in cipheredText:
+        plaintext[col] += symbol
+        col += 1#Point to next column
+
+        #If there are no more columns OR we're at a shaded box, go back to the first column and the next row
+
+        if(col == numOfColumns) or (col == numOfColumns - 1 and row >= numOfRows - numOfShadeBoxes):
+            col = 0
+            row += 1
+    return ''.join(plaintext)
 
 
 #No validation implemented yet
@@ -47,23 +76,25 @@ def DisplayCipheredText(table):
     for column in table:
         for character in column:
             cipheredMessage += character
-    print("Ciphered text: " + cipheredMessage)
+    return cipheredMessage
+    #print("Ciphered text: " + cipheredMessage)
 
 def DoTheTransposition(message, key):
-    table = []
-    for x in range(int(key)):#let's make it as two dimensional list, number of column is given by key so it might make 8 column now
-        table.append([])
-    currentColumn = 0
-    currentRow = 0
+    ciphered_message = ""
 
-    #loops through every character in message
-    for character in message:
-        table[currentColumn].insert(currentRow,character) #Every character is assigned to it's column
-        currentColumn= currentColumn+1
-        if currentColumn > int(key)-1:#if program finish assigning character to last column, it starts with new row
-            currentColumn = 0
-            currentRow=currentRow+1
-    return table
+
+
+    for column in range(int(key)):#Every iteration fill in one column
+        index = column
+        shift = 0
+
+        while index < len(message):
+
+            ciphered_message += message[index]
+            shift += key
+            index = column + shift
+    return ciphered_message
+
 
 def Program():
     tupleWithData = UserInput()#Tuple contains message and key
@@ -74,9 +105,5 @@ def Program():
     table = DoTheTransposition(message, key)
     DisplayCipheredText(table)
 
-
-#Program()
-Decipher("Cenoonommstmme oo snnio. s xs cx",8)
-
-
+TestingFuction()
 
